@@ -6,6 +6,9 @@
 #include "Helpers/MathFuncs.h"
 #include "Helpers/Sprite2D.h"
 #include "Player.h"
+#include "AABB.h"
+#include "Block.h"
+
 
 CPlatformerGame::CPlatformerGame()
 {
@@ -14,6 +17,12 @@ CPlatformerGame::CPlatformerGame()
 
     Textures["SoccerBall"] = LoadTexture( "Data/Textures/SoccerBall.png" );
 
+    // Creating the blocks
+    m_Blocks.push_back(new CBlock(vec2(100, 500), vec2(1050, 50), DARKBLUE)); // Floor
+    m_Blocks.push_back(new CBlock(vec2(100, 0), vec2(50, 500), DARKBLUE)); // Left Wall
+    m_Blocks.push_back(new CBlock(vec2(1100, 0), vec2(50, 500), DARKBLUE)); // Left Wall
+    
+    
     Player = new CPlayer( this );
 
     reset();
@@ -46,10 +55,22 @@ void CPlatformerGame::draw()
 
     Player->draw();
 
+    // Outputting the Debug Collision
     if (DebugVisualsEnabled)
     {
         Player->drawDebugVisuals();
     }
+    
+    // Outputting the Blocks
+    for (CBlock* block : m_Blocks)
+    {
+        block->draw();
+    }
+}
+
+std::vector<CBlock*>& CPlatformerGame::getBlocks()
+{
+    return m_Blocks;
 }
 
 void CPlatformerGame::onKey(int keyCode, KeyState keyState)

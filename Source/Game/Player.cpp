@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Block.h"
 
 CPlayer::CPlayer(CPlatformerGame* game)
     : Game( game )
@@ -34,7 +35,10 @@ void CPlayer::draw()
 
 void CPlayer::drawDebugVisuals()
 {
-    DrawCircle(Position.X + ColliderFootOffset.X, Position.Y + ColliderFootOffset.Y, 5, { 255, 109, 194, 200 });
+    DrawCircle(
+        Position.X + ColliderFootOffset.X,
+        Position.Y + ColliderFootOffset.Y,
+        5, { 255, 109, 194, 200 });
 }
 
 void CPlayer::setPosition(vec2 pos)
