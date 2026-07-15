@@ -7,8 +7,8 @@ public:
     bool isPointInside(vec2 point);
 
 private:
-    float x;
-    float y;
-    float w;
-    float h;
+    float x; // Position
+    float y; // Position
+    float w; // Width
+    float h; // Height
 };
