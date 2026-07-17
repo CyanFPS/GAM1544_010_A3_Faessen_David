@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Helpers/Vector.h"
+#include "Helpers/InputTypes.h"
 
 class CPlatformerGame;
 
@@ -16,10 +17,18 @@ public:
 
     void setPosition(vec2 pos);
 
+    void onKey(int keyCode, KeyState keyState);
+
 private:
     CPlatformerGame* Game;
-
+    
+    // Collision points
     vec2 ColliderFootOffset;
+    vec2 ColliderLeftOffset;
+    vec2 ColliderRightOffset;
+    vec2 ColliderHeadOffset;
+    
+    
     vec2 Position;
     vec2 Scale;
     vec2 Velocity;

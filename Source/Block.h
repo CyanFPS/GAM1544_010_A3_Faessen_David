@@ -11,6 +11,11 @@ public:
     void draw();
     void drawDebugVisuals();
 
+    // Getters
+    vec2 getPosition();
+    vec2 getSize();
+    AABB& getAABB(); // Getting a vec2 from the AABB class
+
 private:
     // Member Variables
     vec2 m_Position;

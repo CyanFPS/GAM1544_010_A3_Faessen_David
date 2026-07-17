@@ -25,6 +25,21 @@ void CBlock::drawDebugVisuals()
         { 255, 109, 194, 200 });
 }
 
+vec2 CBlock::getPosition()
+{
+    return m_Position;
+}
+
+vec2 CBlock::getSize()
+{
+    return m_Size;
+}
+
+AABB& CBlock::getAABB()
+{
+    return m_AABB;
+}
+
 
 
 
