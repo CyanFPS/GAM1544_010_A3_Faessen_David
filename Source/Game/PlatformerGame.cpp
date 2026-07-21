@@ -83,6 +83,8 @@ void CPlatformerGame::onKey(int keyCode, KeyState keyState)
     {
         DebugVisualsEnabled = !DebugVisualsEnabled;
     }
+
+    Player->onKey(keyCode, keyState); // Calling onKey to make the player move.
 }
 
 void CPlatformerGame::onMouseButton(int button, KeyState keyState)

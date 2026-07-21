@@ -32,4 +32,9 @@ private:
     vec2 Position;
     vec2 Scale;
     vec2 Velocity;
+    
+    
+    // Variables for Player movement
+    const float m_Speed;
+    vec2 Controls;
 };

@@ -3,10 +3,12 @@
 #include "PlatformerGame.h"
 
 CPlayer::CPlayer(CPlatformerGame* game)
-    : Game( game )
+    : Game( game ),
+      m_Speed(200.0f)
 {
     Position = { 200, 300 };
     Scale = { 50, 100 };
+    Controls = { 0, 0 };
 
     ColliderFootOffset = { 0, 50 }; // Foot
     ColliderLeftOffset = { -25, 0 }; // Left Arm
@@ -20,6 +22,9 @@ CPlayer::~CPlayer()
 
 void CPlayer::update(float deltaTime)
 {
+    
+    Velocity.X = Controls.X * m_Speed; // Movement Vector Math
+    
     vec2 gravity = { 0, 75 };
     
     Velocity += gravity * deltaTime;
@@ -36,14 +41,14 @@ void CPlayer::update(float deltaTime)
             Position.Y = block->getPosition().Y - 50;
             Velocity.Y = 0;
         }
-        if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Hand Collision
+       if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Side Collision
         {
-            Position.X = block->getPosition().X - Scale.X;
-            Velocity.X = 0;
+           Position.X = block->getPosition().X + block->getSize().X + Scale.X / 2;
+           Velocity.X = 0;
         }
-        if (block->getAABB().isPointInside(Position + ColliderRightOffset)) // Right Hand Collision
+        if (block->getAABB().isPointInside(Position + ColliderRightOffset)) // Right Side Collision
         {
-            Position.X = block->getPosition().X - Scale.X;
+            Position.X = block->getPosition().X - Scale.X / 2;
             Velocity.X = 0;
         }
         if (block->getAABB().isPointInside(Position + ColliderHeadOffset)) // Head Collision
@@ -52,7 +57,6 @@ void CPlayer::update(float deltaTime)
             Velocity.Y = 0;
         }
     }
-
 }
 
 void CPlayer::draw()
@@ -90,5 +94,22 @@ void CPlayer::setPosition(vec2 pos)
 
 void CPlayer::onKey(int keyCode, KeyState keyState)
 {
+    
+    if (keyState == KeyState::Pressed)
+    {
+        if (keyCode == KEY_LEFT || keyCode == 'A')
+            Controls.X -= 1;
+        if (keyCode == KEY_RIGHT || keyCode == 'D')
+            Controls.X += 1;
+    }
+
+    if (keyState == KeyState::Released)
+    {
+        if (keyCode == KEY_LEFT || keyCode == 'A')
+            Controls.X += 1;
+        if (keyCode == KEY_RIGHT || keyCode == 'D')
+            Controls.X -= 1;
+    }
 }
+
 
