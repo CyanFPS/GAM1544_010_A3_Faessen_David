@@ -3,11 +3,11 @@
 #include <float.h>
 
 #include "PlatformerGame.h"
+#include "Player.h"
+#include "Block.h"
+#include "Ball.h"
 #include "Helpers/MathFuncs.h"
 #include "Helpers/Sprite2D.h"
-#include "Player.h"
-#include "AABB.h"
-#include "Block.h"
 
 
 CPlatformerGame::CPlatformerGame()
@@ -16,16 +16,18 @@ CPlatformerGame::CPlatformerGame()
     srand( rd() );
 
     Textures["SoccerBall"] = LoadTexture( "Data/Textures/SoccerBall.png" );
-
-    // Creating the blocks
-    m_Blocks.push_back(new CBlock(vec2(100, 500), vec2(1050, 50), DARKBLUE)); // Floor
-    m_Blocks.push_back(new CBlock(vec2(100, 0), vec2(50, 500), DARKBLUE)); // Left Wall
-    m_Blocks.push_back(new CBlock(vec2(1100, 0), vec2(50, 500), DARKBLUE)); // Left Wall
-    
     
     Player = new CPlayer( this );
 
-    reset();
+    Ball = new CBall( this );
+    Ball->setVelocity({ 50,0 });
+
+     m_Blocks.push_back(new CBlock(vec2(100, 500), vec2(200, 50), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(300, 500), vec2(200, 50), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(500, 500), vec2(200, 50), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(700, 500), vec2(200, 50), DARKBLUE));
+    
+     reset();
 }
 
 CPlatformerGame::~CPlatformerGame()
@@ -38,11 +40,13 @@ CPlatformerGame::~CPlatformerGame()
 
 void CPlatformerGame::reset()
 {
+    Player->setPosition({ 200,300 });
 }
 
 void CPlatformerGame::update(float deltaTime)
 {
     Player->update( deltaTime );
+    Ball->update(deltaTime);
 }
 
 void CPlatformerGame::draw()
@@ -54,6 +58,7 @@ void CPlatformerGame::draw()
     DrawText( "Hello", 600, 300, 50, DARKGRAY );
 
     Player->draw();
+    Ball->draw();
 
     // Outputting the Debug Collision
     if (DebugVisualsEnabled)
@@ -106,4 +111,9 @@ Texture2D CPlatformerGame::getTexture(const char* textureName) const
     // Return an empty texture if not found.
     assert( false );
     return Texture2D();
+}
+
+CBall* CPlatformerGame::getBall()
+{
+    return Ball;
 }

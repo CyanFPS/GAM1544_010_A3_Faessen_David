@@ -11,6 +11,7 @@
 
 class CPlayer;
 class CBlock;
+class CBall;
 
 class CPlatformerGame
 {
@@ -32,14 +33,15 @@ public:
 
     // Getters.
     Texture2D getTexture(const char* textureName) const;
+    CBall* getBall();
 
 private:
     std::unordered_map<std::string, Texture2D> Textures;
 
     bool DebugVisualsEnabled = false;
 
-    CPlayer* Player;
-    
     // Vector of CBlock Pointers
     std::vector<CBlock*> m_Blocks;
+    CPlayer* Player;
+    CBall* Ball;
 };

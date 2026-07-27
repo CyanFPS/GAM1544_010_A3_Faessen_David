@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "PlatformerGame.h"
+#include "Ball.h"
 
 CPlayer::CPlayer(CPlatformerGame* game)
     : Game( game ),
@@ -22,17 +23,17 @@ CPlayer::~CPlayer()
 
 void CPlayer::update(float deltaTime)
 {
-    
+
     Velocity.X = Controls.X * m_Speed; // Movement Vector Math
-    
+
     vec2 gravity = { 0, 75 };
-    
+
     Velocity += gravity * deltaTime;
     Position += Velocity * deltaTime;
 
     // Asking for the blocks
     std::vector<CBlock*>& m_Blocks = Game->getBlocks();
-    
+
     // Loop over blocks, check for overlaps
     for (CBlock* block : m_Blocks)
     {
@@ -41,10 +42,10 @@ void CPlayer::update(float deltaTime)
             Position.Y = block->getPosition().Y - 50;
             Velocity.Y = 0;
         }
-       if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Side Collision
+        if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Side Collision
         {
-           Position.X = block->getPosition().X + block->getSize().X + Scale.X / 2;
-           Velocity.X = 0;
+            Position.X = block->getPosition().X + block->getSize().X + Scale.X / 2;
+            Velocity.X = 0;
         }
         if (block->getAABB().isPointInside(Position + ColliderRightOffset)) // Right Side Collision
         {
@@ -57,8 +58,37 @@ void CPlayer::update(float deltaTime)
             Velocity.Y = 0;
         }
     }
-}
 
+    // Ball collision code
+    CBall* ball = Game->getBall();
+    
+    bool touching = IsCircleOverlappingCircle(Position + ColliderFootOffset, 10.0f, ball->getPosition(), ball->getRadius());
+    
+
+    if (IsCircleOverlappingCircle(Position + ColliderLeftOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Left Arm Collision
+    {
+        touching = true;
+    }
+    if (IsCircleOverlappingCircle(Position + ColliderRightOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Right Arm Collision
+    {
+        touching = true;
+    }
+    if (IsCircleOverlappingCircle(Position + ColliderHeadOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Head Collision
+    {
+        touching = true;
+    }
+
+    if (touching && !BallTouching)
+    {
+        vec2 velocity = ball->getVelocity();
+
+        velocity.Y -= 250.0f;
+
+        ball->setVelocity(velocity);
+    }
+
+    BallTouching = touching;
+}
 void CPlayer::draw()
 {
     DrawRectangle(

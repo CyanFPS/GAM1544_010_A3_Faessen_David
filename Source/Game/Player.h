@@ -2,9 +2,10 @@
 
 #include "Helpers/Vector.h"
 #include "Helpers/InputTypes.h"
+#include "Helpers/MathFuncs.h"
 
 class CPlatformerGame;
-
+class CBall;
 class CPlayer
 {
 public:
@@ -37,4 +38,7 @@ private:
     // Variables for Player movement
     const float m_Speed;
     vec2 Controls;
+
+    // Variable for Ball collision
+    bool BallTouching = false;
 };

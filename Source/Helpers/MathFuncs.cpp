@@ -1,5 +1,4 @@
 #include <random>
-
 #include "MathFuncs.h"
 
 float randFloat(float min, float max)
@@ -27,4 +26,28 @@ float degToRad(float degrees)
 float radToDeg(float radians)
 {
     return radians * (180.0f / PI);
+}
+bool IsCircleOverlappingLine(vec2 lineStart, vec2 lineEnd, vec2 circlePos, float circleRadius)
+{
+    vec2 circleDir = circlePos - lineStart;
+    vec2 lineDir = lineEnd - lineStart;
+    float lineLength = lineDir.length();
+    lineDir.normalize();
+
+    float n = circleDir.dot(lineDir);
+    n = clamp(n, 0, lineLength);
+
+    vec2 nearestPointOnLine = lineDir * n + lineStart;
+
+    float distFromLine = (circlePos - nearestPointOnLine).length();
+
+    if (distFromLine <= circleRadius)
+        return true;
+
+    return false;
+}
+
+bool IsCircleOverlappingCircle(vec2 circle1Pos, float circle1Radius, vec2 circle2Pos, float circle2Radius)
+{
+    return (circle1Pos - circle2Pos).length() <= (circle1Radius + circle2Radius);
 }
