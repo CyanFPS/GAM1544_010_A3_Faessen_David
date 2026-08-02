@@ -16,9 +16,6 @@
     <ClCompile Include="Game\PlatformerGame.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player.cpp">
-      <Filter>Source\Game</Filter>
-    </ClCompile>
     <ClCompile Include="AABB.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
@@ -26,6 +23,15 @@
       <Filter>Source\Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Ball.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\AnimatedObject.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObject.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -58,6 +64,12 @@
       <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Ball.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\AnimatedObject.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObject.h">
       <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>

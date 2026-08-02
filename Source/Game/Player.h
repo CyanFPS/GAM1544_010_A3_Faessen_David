@@ -3,10 +3,13 @@
 #include "Helpers/Vector.h"
 #include "Helpers/InputTypes.h"
 #include "Helpers/MathFuncs.h"
+#include "Game/AnimatedObject.h"
 
 class CPlatformerGame;
 class CBall;
-class CPlayer
+class Sprite2D;
+
+class CPlayer : public CAnimatedObject
 {
 public:
     CPlayer(CPlatformerGame* game);
@@ -21,7 +24,6 @@ public:
     void onKey(int keyCode, KeyState keyState);
 
 private:
-    CPlatformerGame* Game;
     
     // Collision points
     vec2 ColliderFootOffset;
@@ -29,15 +31,14 @@ private:
     vec2 ColliderRightOffset;
     vec2 ColliderHeadOffset;
     
-    
-    vec2 Position;
-    vec2 Scale;
     vec2 Velocity;
     
     
     // Variables for Player movement
-    const float m_Speed;
+    float Speed = 200;
+    float MovementDir = 0;
     vec2 Controls;
+
 
     // Variable for Ball collision
     bool BallTouching = false;

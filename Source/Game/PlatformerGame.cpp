@@ -17,7 +17,7 @@ CPlatformerGame::CPlatformerGame()
 
     Textures["SoccerBall"] = LoadTexture( "Data/Textures/SoccerBall.png" );
     
-    Player = new CPlayer( this );
+    Player = new CPlayer(this);
 
     Ball = new CBall( this );
     Ball->setVelocity({ 50,0 });
@@ -26,6 +26,8 @@ CPlatformerGame::CPlatformerGame()
      m_Blocks.push_back(new CBlock(vec2(300, 500), vec2(200, 50), DARKBLUE));
      m_Blocks.push_back(new CBlock(vec2(500, 500), vec2(200, 50), DARKBLUE));
      m_Blocks.push_back(new CBlock(vec2(700, 500), vec2(200, 50), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(900, 500), vec2(200, 50), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(1000, 500), vec2(200, 50), DARKBLUE));
     
      reset();
 }
@@ -53,9 +55,7 @@ void CPlatformerGame::draw()
 {
     ClearBackground( WHITE );
 
-    DrawCircle( 400, 300, 50, RED );
-    DrawTexture( getTexture("SoccerBall"), 500, 300, WHITE );
-    DrawText( "Hello", 600, 300, 50, DARKGRAY );
+    DrawText( "Press 'TAB' for Debug", 600, 300, 50, DARKGRAY );
 
     Player->draw();
     Ball->draw();

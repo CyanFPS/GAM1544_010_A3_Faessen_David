@@ -42,6 +42,7 @@ private:
     CPlatformerGame* Game = nullptr;
 
     bool Active = false;
+    bool FlipHorizontal = false;
 
     vec2 Position = 0;
     float Angle = 0;

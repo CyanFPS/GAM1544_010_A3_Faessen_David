@@ -2,19 +2,34 @@
 #include "Block.h"
 #include "PlatformerGame.h"
 #include "Ball.h"
+#include "Helpers/Sprite2D.h"
 
-CPlayer::CPlayer(CPlatformerGame* game)
-    : Game( game ),
-      m_Speed(200.0f)
+
+CPlayer::CPlayer(CPlatformerGame* game) : CAnimatedObject(game) 
 {
     Position = { 200, 300 };
-    Scale = { 50, 100 };
+    Scale = { 1.5, 1.5 };
     Controls = { 0, 0 };
 
     ColliderFootOffset = { 0, 50 }; // Foot
     ColliderLeftOffset = { -25, 0 }; // Left Arm
     ColliderRightOffset = { 25, 0 }; // Right Arm
-    ColliderHeadOffset = { 0, -50 }; // Head
+    ColliderHeadOffset = { 0, -25 }; // Head
+
+    // Idle Frame (when player isn't moving)
+    IdleFrames.push_back(LoadTexture("Data/Textures/SonicIdle.png"));
+
+    // Moving Animations
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk1.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk2.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk3.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk4.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk5.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk6.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk7.png"));
+    WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk8.png"));
+
+    CurrentFrame = &IdleFrames;
 }
 
 CPlayer::~CPlayer()
@@ -23,14 +38,37 @@ CPlayer::~CPlayer()
 
 void CPlayer::update(float deltaTime)
 {
-
-    Velocity.X = Controls.X * m_Speed; // Movement Vector Math
-
-    vec2 gravity = { 0, 75 };
-
+    vec2 gravity = { 0, 250 };
     Velocity += gravity * deltaTime;
-    Position += Velocity * deltaTime;
 
+    // Movement code
+    MovementDir = Controls.X;
+    Velocity.X = MovementDir * Speed;
+
+    Position += Velocity * deltaTime;
+    
+    // If movement isn't detected; WalkFrames is used.
+    if (MovementDir == 0)
+    {
+        CurrentFrame = &IdleFrames;
+    }
+    else
+    {
+        CurrentFrame = &WalkFrames;
+    }
+
+    // Flipping Sprites if in the respective axis
+    if (MovementDir > 0)
+    {
+        FlipHorizontal = false;
+    }
+    if (MovementDir < 0)
+    {
+        FlipHorizontal = true;
+    }
+
+    CAnimatedObject::update(deltaTime);
+    
     // Asking for the blocks
     std::vector<CBlock*>& m_Blocks = Game->getBlocks();
 
@@ -91,10 +129,7 @@ void CPlayer::update(float deltaTime)
 }
 void CPlayer::draw()
 {
-    DrawRectangle(
-        Position.X - Scale.X/2,
-        Position.Y - Scale.Y/2,
-        Scale.X, Scale.Y, YELLOW );
+    CAnimatedObject::draw();
 }
 
 void CPlayer::drawDebugVisuals()

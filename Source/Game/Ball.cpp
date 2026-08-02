@@ -103,7 +103,7 @@ void CBall::update(float deltaTime)
 
 void CBall::draw()
 {
-    Sprite->draw(Position, Angle, Scale);
+    Sprite->draw(Position, Angle, Scale, FlipHorizontal);
 }
 
 void CBall::onKey(int keyCode, KeyState keyState)

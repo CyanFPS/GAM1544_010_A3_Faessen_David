@@ -198,14 +198,18 @@
     </None>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Game\AnimatedObject.h" />
     <ClInclude Include="Game\Ball.h" />
+    <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\PlatformerGame.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Helpers\Drawing.h" />
     <ClInclude Include="Helpers\InputTypes.h" />
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Game\AnimatedObject.cpp" />
     <ClCompile Include="Game\Ball.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\PlatformerGame.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Helpers\Drawing.cpp" />
