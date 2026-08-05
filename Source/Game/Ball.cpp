@@ -1,6 +1,7 @@
 #include "Ball.h"
 #include "PlatformerGame.h"
 #include "Block.h"
+#include "Collectable.h"
 #include "Helpers/MathFuncs.h"
 #include "Helpers/Sprite2D.h"
 
@@ -9,8 +10,10 @@ CBall::CBall(CPlatformerGame* game)
 {
     Active = true;
 
-    Radius = 20.0f;
+    Radius = 32.0f;
     Scale = 1.0f;
+    MaxTime = 3.5f; // Ball lasts 3.5 seconds
+    Lifetime = MaxTime;
 
     Sprite = new Sprite2D(Game->getTexture("SoccerBall"));
 }
@@ -27,15 +30,20 @@ void CBall::reset()
 
 void CBall::update(float deltaTime)
 {
+    // Code for the Lifetime of the Ball
+    Lifetime -= deltaTime;
+    Scale = Lifetime / MaxTime;
+
+    if (Lifetime <= 0.0f)
+    {
+        Active = false;
+        return;
+    }
+    
     std::vector<CBlock*>& m_Blocks = Game->getBlocks(); // Asking the game for the block list
     
     float speed = 200.0f;
     vec2 gravity = { 0.0f, 200.0f };
-
-    vec2 dir = Controls.getNormalized();
-    vec2 forces = gravity + dir * speed;
-
-    Velocity += forces * deltaTime;
 
     Position.X += Velocity.X * deltaTime;
     Position.Y += Velocity.Y * deltaTime;
@@ -73,6 +81,19 @@ void CBall::update(float deltaTime)
         {
             Position.X = position.X + size.X + 32.0f;
             Velocity.X *= -0.5f;
+        }
+    }
+
+    std::vector<CCollectable*>& collectables = Game->getCollectables();
+
+    for (CCollectable* collectable : collectables)
+    {
+        
+        if (IsCircleOverlappingCircle(Position, 32.0f, collectable->getPosition(), collectable->getRadius()))
+        {
+            Game->AddCollectedCount();
+            collectable->isCollected();
+            collectable->respawn();
         }
     }
 

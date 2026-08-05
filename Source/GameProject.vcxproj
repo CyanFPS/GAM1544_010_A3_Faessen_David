@@ -200,6 +200,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Game\AnimatedObject.h" />
     <ClInclude Include="Game\Ball.h" />
+    <ClInclude Include="Game\Collectable.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\PlatformerGame.h" />
     <ClInclude Include="Game\Player.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Game\AnimatedObject.cpp" />
     <ClCompile Include="Game\Ball.cpp" />
+    <ClCompile Include="Game\Collectable.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\PlatformerGame.cpp" />
     <ClCompile Include="Game\Player.cpp" />

@@ -53,4 +53,8 @@ private:
     Sprite2D* Sprite;
     vec2 Controls = 0;
     vec2 Velocity = 0;
+
+    // Adding Lifetime to the Ball
+    float Lifetime;
+    float MaxTime;
 };
