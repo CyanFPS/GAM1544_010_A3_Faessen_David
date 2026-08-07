@@ -47,7 +47,7 @@ void CPlayer::update(float deltaTime)
 
     Position += Velocity * deltaTime;
     
-    // If movement isn't detected; WalkFrames is used.
+    // If movement is detected; WalkFrames is used.
     if (MovementDir == 0)
     {
         CurrentFrame = &IdleFrames;

@@ -38,16 +38,16 @@ CPlatformerGame::CPlatformerGame()
      
      // Extra Platforms
      m_Blocks.push_back(new CBlock(vec2(250, 400), vec2(150, 25), DARKBLUE));
-     m_Blocks.push_back(new CBlock(vec2(450, 300), vec2(150, 25), DARKBLUE));
-     m_Blocks.push_back(new CBlock(vec2(650, 100), vec2(150, 25), DARKBLUE));
-     m_Blocks.push_back(new CBlock(vec2(1000, 250), vec2(150, 25), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(750, 500), vec2(150, 25), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(750, 200), vec2(150, 25), DARKBLUE));
+     m_Blocks.push_back(new CBlock(vec2(250, 100), vec2(150, 25), DARKBLUE));
 
      // Collectables
-     m_Collectables.push_back(new CCollectable(this, { 200.0f, 350.0f }));
-     m_Collectables.push_back(new CCollectable(this, { 250.0f, 100.0f }));
+     m_Collectables.push_back(new CCollectable(this, { 875.0f, 650.0f }));
+     m_Collectables.push_back(new CCollectable(this, { 300.0f, 375.0f }));
      m_Collectables.push_back(new CCollectable(this, { 550.0f, 220.0f }));
-     m_Collectables.push_back(new CCollectable(this, { 445.0f, 175.0f }));
-     m_Collectables.push_back(new CCollectable(this, { 756.0f, 125.0f }));
+     m_Collectables.push_back(new CCollectable(this, { 550.0f, 100.0f }));
+     //m_Collectables.push_back(new CCollectable(this, { 756.0f, 125.0f }));
 
      reset();
 }
@@ -107,9 +107,7 @@ void CPlatformerGame::update(float deltaTime)
 void CPlatformerGame::draw()
 {
     ClearBackground( WHITE );
-
-    DrawText( "Press 'TAB' for Debug", 600, 300, 50, DARKGRAY );
-    DrawText(TextFormat("Collected: %i", m_CollectedNum), 600, 600, 50, DARKBLUE);
+    DrawText(TextFormat("Collected: %i", m_CollectedNum), 900, 600, 50, DARKBLUE);
 
     Player->draw();
 
