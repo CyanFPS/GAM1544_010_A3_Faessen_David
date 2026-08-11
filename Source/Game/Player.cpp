@@ -152,6 +152,11 @@ void CPlayer::drawDebugVisuals()
         5, { 255, 109, 194, 200 });
 }
 
+bool CPlayer::getDebugVisuals()
+{
+    return DebugVisualsEnabled;
+}
+
 void CPlayer::setPosition(vec2 pos)
 {
     Position = pos;

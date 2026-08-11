@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\Libraries\raylib\src;..\Libraries\raylib\src\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\faes0001\Desktop\GAM1544_010_A3_Faessen_David\Source;C:\Users\faes0001\Desktop\GAM1544_010_A3_Faessen_David\Source\Game;..\Libraries\raylib\src;..\Libraries\raylib\src\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>
@@ -194,10 +194,17 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameoverState.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="MenuState.cpp" />
+    <ClInclude Include="GameoverState.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="MenuState.h" />
     <None Include="..\.gitignore">
     </None>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="GameplayState.h" />
     <ClInclude Include="Game\AnimatedObject.h" />
     <ClInclude Include="Game\Ball.h" />
     <ClInclude Include="Game\Collectable.h" />
@@ -208,6 +215,7 @@
     <ClInclude Include="Helpers\InputTypes.h" />
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="Game\AnimatedObject.cpp" />
     <ClCompile Include="Game\Ball.cpp" />
     <ClCompile Include="Game\Collectable.cpp" />

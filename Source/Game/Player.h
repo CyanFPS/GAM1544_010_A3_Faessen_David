@@ -18,6 +18,7 @@ public:
     void update(float deltaTime);
     void draw();
     void drawDebugVisuals();
+    bool getDebugVisuals();
 
     void setPosition(vec2 pos);
 
@@ -42,4 +43,6 @@ private:
 
     // Variable for Ball collision
     bool BallTouching = false;
+
+    bool DebugVisualsEnabled = false;
 };
