@@ -15,7 +15,7 @@ public:
 
     virtual void onKey(int keyCode, KeyState keyState);
     virtual void update(float deltaTime) = 0;
-    virtual void draw() = 0;
+    virtual void draw(vec2 offset) = 0;
 
     vec2 getPosition() { return Position; }
     void setPosition(vec2 pos) { Position = pos; }

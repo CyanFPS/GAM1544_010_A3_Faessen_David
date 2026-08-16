@@ -11,7 +11,7 @@ public:
     CAnimatedObject(CPlatformerGame* game);
 
     virtual void update(float deltaTime);
-    virtual void draw();
+    virtual void draw(vec2 offset);
 
 protected:
     Sprite2D Sprite;

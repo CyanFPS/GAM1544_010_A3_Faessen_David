@@ -23,6 +23,8 @@ public:
 	// State Events
 	void onActivate();
 	void onDeactive();
+	void createLevel();
+	void createLevel2();
 
 	// Gameplay Objects
 	std::vector<CBlock*>& getBlocks();
@@ -31,9 +33,6 @@ public:
 
 	// Collectable Spawning
 	void spawnCollectables();
-
-	// Getters
-	CBall* getBall();
 
 	// Input event methods.
 	void onKey(int keyCode, KeyState keyState);
@@ -51,11 +50,9 @@ private:
 	float m_CollectableSpawnTimer;
 	float m_CollectableSpawnInterval;
 
-	// Player and Ball
+	// Timer for the game so it can end
+	float m_GameplayTimer;
+
+	// Player
 	CPlayer* Player;
-	CBall* Ball;
-
-
-protected:
-	CPlatformerGame* Game;
 };

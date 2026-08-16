@@ -8,7 +8,7 @@ class CBlock
 public:
     CBlock(vec2& position, vec2& size, Color& color);
 
-    void draw();
+    void draw(vec2 offset);
     void drawDebugVisuals();
 
     // Getters

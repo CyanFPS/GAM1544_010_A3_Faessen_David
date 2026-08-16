@@ -4,6 +4,7 @@
 #include "Helpers/InputTypes.h"
 #include "Helpers/MathFuncs.h"
 #include "Game/AnimatedObject.h"
+#include "Block.h"
 
 class CPlatformerGame;
 class CBall;
@@ -16,13 +17,20 @@ public:
     ~CPlayer();
 
     void update(float deltaTime);
-    void draw();
-    void drawDebugVisuals();
+    void draw(vec2 offset);
+    
+    // Debug Visuals Functions
+    void drawDebugVisuals(vec2 offset);
     bool getDebugVisuals();
-
+    void toggleDebugVisuals();
+    
     void setPosition(vec2 pos);
 
     void onKey(int keyCode, KeyState keyState);
+
+    // Collision Code
+    void blockCollision(std::vector<CBlock*>& blocks);
+    void ballCollision(std::vector<CBall*>& balls);
 
 private:
     

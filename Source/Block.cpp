@@ -9,10 +9,10 @@ CBlock::CBlock(vec2& position, vec2& size, Color& color) :
 {
 }
 
-void CBlock::draw()
+void CBlock::draw(vec2 offset)
 {
     DrawRectangle(
-        m_Position.X, m_Position.Y,
+        m_Position.X + offset.X, m_Position.Y + offset.Y,
         m_Size.X, m_Size.Y,
         m_Colour);
 }

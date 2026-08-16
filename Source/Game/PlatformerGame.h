@@ -16,7 +16,7 @@ class CGameoverState;
 
 enum class GameStateType
 {
-    Menu,
+    Menu, 
     Gameplay,
     Gameover
 };
@@ -41,9 +41,15 @@ public:
     // Collectable Data
     void AddCollectedCount();
     int CountCollectables();
+    void ResetCollectable();
+
+    void setDebugMode(bool debugMode);
+    void setLevel2(bool level2);
 
     // Getters.
     Texture2D getTexture(const char* textureName) const;
+    bool getDebugMode();
+    bool getLevel2();
 
 private:
     std::unordered_map<std::string, Texture2D> Textures;
@@ -54,4 +60,8 @@ private:
     
     // Collectable Counter
     int m_CollectedNum;
+
+    // Options 
+    bool m_DebugMode;
+    bool m_Level2;
 };

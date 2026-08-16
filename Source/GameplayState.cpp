@@ -13,32 +13,12 @@
 
 CGameplayState::CGameplayState(CPlatformerGame* game) : CGameState(game)
 {
-	Player = nullptr;
-	Ball = nullptr;
+    Player = new CPlayer(game);
+    
+    m_GameplayTimer = 30.0f;
 
 	m_CollectableSpawnTimer = 0.0f;
 	m_CollectableSpawnInterval = 3.0f;
-
-	Player = new CPlayer(Game);
-	Ball = new CBall(Game);
-
-	m_Balls.push_back(Ball);
-
-    // Floor
-    m_Blocks.push_back(new CBlock(vec2(0, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(100, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(300, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(500, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(700, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(900, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(1000, 700), vec2(200, 50), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(1200, 700), vec2(200, 50), DARKBLUE));
-
-    // Extra Platforms
-    m_Blocks.push_back(new CBlock(vec2(250, 400), vec2(150, 25), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(750, 500), vec2(150, 25), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(750, 200), vec2(150, 25), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(250, 100), vec2(150, 25), DARKBLUE));
 }
 
 CGameplayState::~CGameplayState()
@@ -66,12 +46,30 @@ CGameplayState::~CGameplayState()
 
 void CGameplayState::update(float deltaTime)
 {
+    CGameState::update(deltaTime);
     
+    if (m_isSliding)
+    {
+        return;
+    }
+    
+    // Player Updates
     if (Player != nullptr)
     {
         Player->update(deltaTime);
+
+        Player->blockCollision(m_Blocks);
+        Player->ballCollision(m_Balls);
     }
 
+    m_GameplayTimer -= deltaTime;
+
+    if (m_GameplayTimer <= 0.0f)
+    {
+        Game->setState(GameStateType::Gameover);
+    }
+    
+    // Collectable Spawns
     m_CollectableSpawnTimer += deltaTime;
 
     if (m_CollectableSpawnTimer >= m_CollectableSpawnInterval)
@@ -84,11 +82,13 @@ void CGameplayState::update(float deltaTime)
         }
     }
 
+    // Ball Updates
     for (auto it = m_Balls.begin(); it != m_Balls.end(); )
     {
         CBall* ball = *it;
 
         ball->update(deltaTime);
+        
         if (!ball->isActive())
         {
             delete ball;
@@ -105,45 +105,129 @@ void CGameplayState::draw()
 {
     ClearBackground(WHITE);
     DrawText(TextFormat("Collected: %i", Game->CountCollectables()), 900, 600, 50, DARKBLUE);
+    //DrawText(TextFormat("Time Left: %i", m_GameplayTimer), 900, 500, 50, DARKBLUE);
 
-    Player->draw();
-
-    // Drawing Debug Visuals
-    if (Player->getDebugVisuals())
+    if (Player != nullptr)
     {
-        Player->drawDebugVisuals();
+        Player->draw(m_Offset);
+    }
+    // Drawing Debug Visuals
+    if (Game->getDebugMode())
+    {
+        Player->drawDebugVisuals(m_Offset);
     }
 
     // Outputting the Blocks
     for (CBlock* block : m_Blocks)
     {
-        block->draw();
+        block->draw(m_Offset);
     }
 
     // Outputting the shooting balls
     for (CBall* ball : m_Balls)
     {
-        ball->draw();
+        ball->draw(m_Offset);
     }
 
     // Outputting the collectables
     for (CCollectable* collectable : m_Collectables)
     {
-        collectable->draw();
+        collectable->draw(m_Offset);
     }
 }
 
 void CGameplayState::reset()
 {
-    Player->setPosition({ 200,300 });
+    m_GameplayTimer = 30.0f;
+
+    for (CBlock* block : m_Blocks)
+    {
+        delete block;
+    }
+    m_Blocks.clear();
+
+    for (CCollectable* collectable : m_Collectables)
+    {
+        delete collectable;
+    }
+    m_Collectables.clear();
+
+    m_CollectableSpawnPoints.clear();
+
+    m_CollectableSpawnTimer = 0.0f;
+
+    Game->ResetCollectable();
+
+    if (Player != nullptr)
+    {
+        delete Player;
+    }
+    
+    Player = new CPlayer(Game);
+
+    if (Game->getLevel2())
+    {
+        createLevel2();
+    }
+    else
+    {
+        createLevel();
+    }
 }
 
 void CGameplayState::onActivate()
 {
+    reset();
 }
 
 void CGameplayState::onDeactive()
 {
+}
+
+void CGameplayState::createLevel()
+{
+    // Floor
+    m_Blocks.push_back(new CBlock(vec2(0, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(100, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(300, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(500, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(700, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(900, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(1000, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(1200, 700), vec2(200, 50), DARKBLUE));
+
+    // Extra Platforms
+    m_Blocks.push_back(new CBlock(vec2(250, 400), vec2(150, 25), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(750, 500), vec2(150, 25), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(750, 200), vec2(150, 25), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(250, 100), vec2(150, 25), DARKBLUE));
+
+    m_CollectableSpawnPoints.push_back(vec2(875.0f, 650.0f));
+    m_CollectableSpawnPoints.push_back(vec2(300.0f, 375.0f));
+    m_CollectableSpawnPoints.push_back(vec2(550.0f, 220.0f));
+    m_CollectableSpawnPoints.push_back(vec2(550.0f, 100.0f));
+}
+
+void CGameplayState::createLevel2()
+{
+    // Floor
+    m_Blocks.push_back(new CBlock(vec2(0, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(100, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(300, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(500, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(700, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(900, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(1000, 700), vec2(200, 50), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(1200, 700), vec2(200, 50), DARKBLUE));
+
+    // Extra Platforms
+    m_Blocks.push_back(new CBlock(vec2(250, 300), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(750, 200), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(750, 500), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(550, 300), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(850, 300), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(950, 300), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(150, 300), vec2(150, 25), RED));
 }
 
 std::vector<CBlock*>& CGameplayState::getBlocks()
@@ -177,11 +261,6 @@ void CGameplayState::spawnCollectables()
     m_Collectables.push_back(collectable);
 }
 
-CBall* CGameplayState::getBall()
-{
-    return Ball;
-}
-
 void CGameplayState::onKey(int keyCode, KeyState keyState)
 {
     if (keyCode == 'R' && keyState == KeyState::Pressed)
@@ -190,7 +269,12 @@ void CGameplayState::onKey(int keyCode, KeyState keyState)
     }
     if (keyCode == KEY_TAB && keyState == KeyState::Pressed)
     {
-        Player->getDebugVisuals();
+        Game->setDebugMode(!Game->getDebugMode());
+    }
+
+    if (keyCode == KEY_LEFT_SHIFT && keyState == KeyState::Pressed)
+    {
+        Game->setLevel2(!Game->getLevel2());
     }
 
     Player->onKey(keyCode, keyState); // Calling onKey to make the player move.
@@ -207,7 +291,7 @@ void CGameplayState::onMouseButton(int button, KeyState keyState)
 
         if (m_Balls.size() < 10) // If statement so no more than 10 balls appear on screen at once.
         {
-            CBall* newBalls = new CBall(Game);
+            CBall* newBalls = new CBall(Game,this);
 
             newBalls->setPosition(Player->getPosition());
             newBalls->setVelocity(direction * 600.0f);

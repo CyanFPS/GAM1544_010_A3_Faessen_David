@@ -18,4 +18,8 @@ public:
 	void onKey(int keyCode, KeyState keyState);
 	void onMouseButton(int button, KeyState keyState);
 	void onMouseMove(int x, int y);
+
+private:
+	bool m_DebugMode;
+	bool m_Level2;
 };

@@ -15,11 +15,11 @@ CCollectable::~CCollectable()
     delete Sprite;
 }
 
-void CCollectable::draw()
+void CCollectable::draw(vec2 offset)
 {
     if (!m_Collected)
     {
-        Sprite->draw(m_Position, 0.0f, 0.05f, false);
+        Sprite->draw(m_Position + offset, 0.0f, 0.05f, false);
     }
 }
 

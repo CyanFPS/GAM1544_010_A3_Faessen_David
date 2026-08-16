@@ -14,6 +14,9 @@
 CPlatformerGame::CPlatformerGame()
 {
     m_CollectedNum = 0;
+
+    m_DebugMode = false;
+    m_Level2 = false;
     
     std::random_device rd;
     srand( rd() );
@@ -30,6 +33,12 @@ CPlatformerGame::CPlatformerGame()
 
 CPlatformerGame::~CPlatformerGame()
 {
+    for (CGameState* state : m_States)
+    {
+        delete state;
+    }
+    
+    
     for( auto texturePair : Textures )
     {
         UnloadTexture( texturePair.second );
@@ -39,22 +48,43 @@ CPlatformerGame::~CPlatformerGame()
 
 void CPlatformerGame::update(float deltaTime)
 {
+    int stateIndex = static_cast<int>(m_CurrentState);
+
+    m_States[stateIndex]->update(deltaTime);
 }
 
 void CPlatformerGame::draw()
 {
+    int stateIndex = static_cast<int>(m_CurrentState);
+
+    m_States[stateIndex]->draw();
 }
 
 void CPlatformerGame::setState(GameStateType state)
 {
+    int oldState = static_cast<int>(m_CurrentState);
+
+    m_States[oldState]->onDeactive();
+    
+    m_CurrentState = state;
+
+    int stateIndex = static_cast<int>(m_CurrentState);
+
+    m_States[stateIndex]->onActivate();
 }
 
 void CPlatformerGame::onKey(int keyCode, KeyState keyState)
 {
+    int stateIndex = static_cast<int>(m_CurrentState);
+
+    m_States[stateIndex]->onKey(keyCode, keyState);
 }
 
 void CPlatformerGame::onMouseButton(int button, KeyState keyState)
 {
+    int stateIndex = static_cast<int>(m_CurrentState);
+
+    m_States[stateIndex]->onMouseButton(button, keyState);
 }
 
 void CPlatformerGame::onMouseMove(int x, int y)
@@ -71,6 +101,21 @@ int CPlatformerGame::CountCollectables()
     return m_CollectedNum;
 }
 
+void CPlatformerGame::ResetCollectable()
+{
+    m_CollectedNum = 0;
+}
+
+void CPlatformerGame::setDebugMode(bool debugMode)
+{
+    m_DebugMode = debugMode;
+}
+
+void CPlatformerGame::setLevel2(bool level2)
+{
+    m_Level2 = level2;
+}
+
 Texture2D CPlatformerGame::getTexture(const char* textureName) const
 {
     auto it = Textures.find( textureName );
@@ -82,4 +127,14 @@ Texture2D CPlatformerGame::getTexture(const char* textureName) const
     // Return an empty texture if not found.
     assert( false );
     return Texture2D();
+}
+
+bool CPlatformerGame::getDebugMode()
+{
+    return m_DebugMode;
+}
+
+bool CPlatformerGame::getLevel2()
+{
+    return m_Level2;
 }

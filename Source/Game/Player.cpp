@@ -47,7 +47,7 @@ void CPlayer::update(float deltaTime)
 
     Position += Velocity * deltaTime;
     
-    // If movement is detected; WalkFrames is used.
+    //If movement is detected; WalkFrames is used.
     if (MovementDir == 0)
     {
         CurrentFrame = &IdleFrames;
@@ -57,7 +57,7 @@ void CPlayer::update(float deltaTime)
         CurrentFrame = &WalkFrames;
     }
 
-    // Flipping Sprites if in the respective axis
+     // Flipping Sprites if in the respective axis
     if (MovementDir > 0)
     {
         FlipHorizontal = false;
@@ -68,93 +68,40 @@ void CPlayer::update(float deltaTime)
     }
 
     CAnimatedObject::update(deltaTime);
-    
-    // Asking for the blocks
-    std::vector<CBlock*>& m_Blocks = Game->getBlocks();
-
-    // Loop over blocks, check for overlaps
-    for (CBlock* block : m_Blocks)
-    {
-        if (block->getAABB().isPointInside(Position + ColliderFootOffset)) // Foot Collision
-        {
-            Position.Y = block->getPosition().Y - 50;
-            Velocity.Y = 0;
-        }
-        if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Side Collision
-        {
-            Position.X = block->getPosition().X + block->getSize().X + Scale.X / 2;
-            Velocity.X = 0;
-        }
-        if (block->getAABB().isPointInside(Position + ColliderRightOffset)) // Right Side Collision
-        {
-            Position.X = block->getPosition().X - Scale.X / 2;
-            Velocity.X = 0;
-        }
-        if (block->getAABB().isPointInside(Position + ColliderHeadOffset)) // Head Collision
-        {
-            Position.Y = block->getPosition().Y + 50;
-            Velocity.Y = 0;
-        }
-    }
-
-    // Ball collision code
-    CBall* ball = Game->getBall();
-    
-    bool touching = IsCircleOverlappingCircle(Position + ColliderFootOffset, 10.0f, ball->getPosition(), ball->getRadius());
-    
-
-    if (IsCircleOverlappingCircle(Position + ColliderLeftOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Left Arm Collision
-    {
-        touching = true;
-    }
-    if (IsCircleOverlappingCircle(Position + ColliderRightOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Right Arm Collision
-    {
-        touching = true;
-    }
-    if (IsCircleOverlappingCircle(Position + ColliderHeadOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Head Collision
-    {
-        touching = true;
-    }
-
-    if (touching && !BallTouching)
-    {
-        vec2 velocity = ball->getVelocity();
-
-        velocity.Y -= 250.0f;
-
-        ball->setVelocity(velocity);
-    }
-
-    BallTouching = touching;
 }
-void CPlayer::draw()
+void CPlayer::draw(vec2 offset)
 {
-    CAnimatedObject::draw();
+    CAnimatedObject::draw(offset);
 }
 
-void CPlayer::drawDebugVisuals()
+void CPlayer::drawDebugVisuals(vec2 offset)
 {
     DrawCircle(
-        Position.X + ColliderFootOffset.X,
-        Position.Y + ColliderFootOffset.Y,
+        Position.X + ColliderFootOffset.X + offset.X,
+        Position.Y + ColliderFootOffset.Y + offset.Y,
         5, { 255, 109, 194, 200 });
     DrawCircle(
-        Position.X + ColliderLeftOffset.X,
-        Position.Y + ColliderLeftOffset.Y,
+        Position.X + ColliderLeftOffset.X + offset.X,
+        Position.Y + ColliderLeftOffset.Y + offset.Y,
         5, { 255, 109, 194, 200 });
     DrawCircle(
-        Position.X + ColliderRightOffset.X,
-        Position.Y + ColliderRightOffset.Y,
+        Position.X + ColliderRightOffset.X + offset.X,
+        Position.Y + ColliderRightOffset.Y + offset.Y,
         5, { 255, 109, 194, 200 });
     DrawCircle(
-        Position.X + ColliderHeadOffset.X,
-        Position.Y + ColliderHeadOffset.Y,
+        Position.X + ColliderHeadOffset.X + offset.X,
+        Position.Y + ColliderHeadOffset.Y + offset.Y,
         5, { 255, 109, 194, 200 });
 }
 
 bool CPlayer::getDebugVisuals()
 {
     return DebugVisualsEnabled;
+}
+
+void CPlayer::toggleDebugVisuals()
+{
+    DebugVisualsEnabled = !DebugVisualsEnabled;
 }
 
 void CPlayer::setPosition(vec2 pos)
@@ -179,6 +126,65 @@ void CPlayer::onKey(int keyCode, KeyState keyState)
             Controls.X += 1;
         if (keyCode == KEY_RIGHT || keyCode == 'D')
             Controls.X -= 1;
+    }
+}
+
+void CPlayer::blockCollision(std::vector<CBlock*>& blocks)
+{
+    // Loop over blocks, check for overlaps
+    for (CBlock* block : blocks)
+    {
+        if (block->getAABB().isPointInside(Position + ColliderFootOffset)) // Foot Collision
+        {
+            Position.Y = block->getPosition().Y - 50;
+            Velocity.Y = 0;
+        }
+        if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Side Collision
+        {
+            Position.X = block->getPosition().X + block->getSize().X + Scale.X / 2;
+            Velocity.X = 0;
+        }
+        if (block->getAABB().isPointInside(Position + ColliderRightOffset)) // Right Side Collision
+        {
+            Position.X = block->getPosition().X - Scale.X / 2;
+            Velocity.X = 0;
+        }
+        if (block->getAABB().isPointInside(Position + ColliderHeadOffset)) // Head Collision
+        {
+            Position.Y = block->getPosition().Y + 50;
+            Velocity.Y = 0;
+        }
+    }
+}
+
+void CPlayer::ballCollision(std::vector<CBall*>& balls)
+{   // Looping over balls
+    for (CBall* ball : balls)
+    {
+        bool touching = IsCircleOverlappingCircle(Position + ColliderFootOffset, 10.0f, ball->getPosition(), ball->getRadius());
+
+        if (IsCircleOverlappingCircle(Position + ColliderLeftOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Left Arm Collision
+        {
+            touching = true;
+        }
+        if (IsCircleOverlappingCircle(Position + ColliderRightOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Right Arm Collision
+        {
+            touching = true;
+        }
+        if (IsCircleOverlappingCircle(Position + ColliderHeadOffset, 10.0f, ball->getPosition(), ball->getRadius())) // Head Collision
+        {
+            touching = true;
+        }
+
+        if (touching && !BallTouching)
+        {
+            vec2 velocity = ball->getVelocity();
+
+            velocity.Y -= 250.0f;
+
+            ball->setVelocity(velocity);
+        }
+        BallTouching = touching;
     }
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "Helpers/InputTypes.h"
 
 class CGameoverState : public CGameState
 {

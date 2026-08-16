@@ -3,19 +3,27 @@
 
 #include "Helpers/InputTypes.h"
 #include "Helpers/Vector.h"
+#include <vector>
+#include "Block.h"
 
 class CPlatformerGame;
 class Sprite2D;
+class CCollectable;
+class CGameplayState;
 
 class CBall
 {
 public:
-    CBall(CPlatformerGame* game);
+    CBall(CPlatformerGame* game ,CGameplayState* state);
     ~CBall();
 
     void reset();
     void update(float deltaTime);
-    void draw();
+    void draw(vec2 offset);
+
+    // Collision Code
+    void blockCollision();
+    void collectableCollision();
 
     // Input event methods.
     void onKey(int keyCode, KeyState keyState);
@@ -40,7 +48,8 @@ public:
 
 private:
     CPlatformerGame* Game = nullptr;
-
+    CGameplayState* State = nullptr;
+    
     bool Active = false;
     bool FlipHorizontal = false;
 

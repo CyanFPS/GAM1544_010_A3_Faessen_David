@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\faes0001\Desktop\GAM1544_010_A3_Faessen_David\Source;C:\Users\faes0001\Desktop\GAM1544_010_A3_Faessen_David\Source\Game;..\Libraries\raylib\src;..\Libraries\raylib\src\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\david\Desktop\GAM1544_010_A3_Faessen_David\Source\Helpers;C:\Users\david\Desktop\GAM1544_010_A3_Faessen_David\Source\Game;C:\Users\david\Desktop\GAM1544_010_A3_Faessen_David\Source;C:\Users\faes0001\Desktop\GAM1544_010_A3_Faessen_David\Source;C:\Users\faes0001\Desktop\GAM1544_010_A3_Faessen_David\Source\Game;..\Libraries\raylib\src;..\Libraries\raylib\src\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>
@@ -127,7 +127,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\Libraries\raylib\src;..\Libraries\raylib\src\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\david\Desktop\GAM1544_010_A3_Faessen_David\Source\Helpers;C:\Users\david\Desktop\GAM1544_010_A3_Faessen_David\Source\Game;C:\Users\david\Desktop\GAM1544_010_A3_Faessen_David\Source;.;..\Libraries\raylib\src;..\Libraries\raylib\src\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>

@@ -14,7 +14,7 @@ public:
     CCollectable(CPlatformerGame* game,vec2 position);
     ~CCollectable();
 
-    void draw();
+    void draw(vec2 offset);
 
     // Getters
     vec2 getPosition();

@@ -2,11 +2,13 @@
 #include "PlatformerGame.h"
 #include "Block.h"
 #include "Collectable.h"
+#include "GameplayState.h"
 #include "Helpers/MathFuncs.h"
 #include "Helpers/Sprite2D.h"
 
-CBall::CBall(CPlatformerGame* game)
-    : Game(game)
+
+CBall::CBall(CPlatformerGame* game,CGameplayState* state)
+    : Game(game), State(state)
 {
     Active = true;
 
@@ -40,9 +42,7 @@ void CBall::update(float deltaTime)
         return;
     }
     
-    std::vector<CBlock*>& m_Blocks = Game->getBlocks(); // Asking the game for the block list
-    
-    float speed = 200.0f;
+    float speed = 150.0f;
     vec2 gravity = { 0.0f, 200.0f };
 
     Position.X += Velocity.X * deltaTime;
@@ -50,52 +50,6 @@ void CBall::update(float deltaTime)
 
     Angle += deltaTime * Velocity.X;
 
-    for (CBlock* block : m_Blocks) // For loop to check for overlaps with the blocks
-    {
-        // Setting the position and size from the Getters in the Block class
-        vec2 position = block->getPosition();
-        vec2 size = block->getSize();
-
-        // Defining each blocks edges for the ball collision
-        vec2 topLeft = position;
-        vec2 topRight = { position.X + size.X, position.Y };
-        vec2 bottomLeft = { position.X, position.Y + size.Y };
-        vec2 bottomRight = { position.X + size.X, position.Y + size.Y };
-
-        if (IsCircleOverlappingLine(topLeft, topRight, Position, 32.0f)) // Top Edge
-        {
-            Position.Y = position.Y - 32.0f;
-            Velocity.Y *= -0.5f;
-        }
-        if (IsCircleOverlappingLine(bottomLeft, bottomRight, Position, 32.0f)) // Bottom Edge
-        {
-            Position.Y = position.Y + size.Y + 32.0f;
-            Velocity.Y *= -0.5f;
-        }
-        if (IsCircleOverlappingLine(topLeft, bottomLeft, Position, 32.0f)) // Left Edge
-        {
-            Position.X = position.X - 32.0f;
-            Velocity.X *= -0.5f;
-        }
-        if (IsCircleOverlappingLine(topRight, bottomRight, Position, 32.0f)) // Right Edge
-        {
-            Position.X = position.X + size.X + 32.0f;
-            Velocity.X *= -0.5f;
-        }
-    }
-
-    std::vector<CCollectable*>& collectables = Game->getCollectables();
-
-    for (CCollectable* collectable : collectables)
-    {
-        
-        if (IsCircleOverlappingCircle(Position, 32.0f, collectable->getPosition(), collectable->getRadius()))
-        {
-            Game->AddCollectedCount();
-            collectable->isCollected();
-            collectable->respawn();
-        }
-    }
 
     // Lock to edges.
     if (Position.X < 32.0f)
@@ -120,11 +74,64 @@ void CBall::update(float deltaTime)
         Velocity.X *= 0.95f; // Slow down horizontal velocity.
         Velocity.Y *= -0.95f; // Bounce off the bottom.
     }
+
+    blockCollision();
+    collectableCollision();
 }
 
-void CBall::draw()
+void CBall::draw(vec2 offset)
 {
-    Sprite->draw(Position, Angle, Scale, FlipHorizontal);
+    Sprite->draw(Position + offset, Angle, Scale, FlipHorizontal);
+}
+
+void CBall::blockCollision()
+{
+    for (CBlock* block : State->getBlocks()) // For loop to check for overlaps with the blocks
+    {
+        // Setting the position and size from the Getters in the Block class
+        vec2 position = block->getPosition();
+        vec2 size = block->getSize();
+
+        // Defining each blocks edges for the ball collision
+        vec2 topLeft = position;
+        vec2 topRight = { position.X + size.X, position.Y };
+        vec2 bottomLeft = { position.X, position.Y + size.Y };
+        vec2 bottomRight = { position.X + size.X, position.Y + size.Y };
+
+        if (IsCircleOverlappingLine(topLeft, topRight, Position, Radius)) // Top Edge
+        {
+            Position.Y = position.Y - 32.0f;
+            Velocity.Y *= -0.5f;
+        }
+        if (IsCircleOverlappingLine(bottomLeft, bottomRight, Position, Radius)) // Bottom Edge
+        {
+            Position.Y = position.Y + size.Y + 32.0f;
+            Velocity.Y *= -0.5f;
+        }
+        if (IsCircleOverlappingLine(topLeft, bottomLeft, Position, Radius)) // Left Edge
+        {
+            Position.X = position.X - 32.0f;
+            Velocity.X *= -0.5f;
+        }
+        if (IsCircleOverlappingLine(topRight, bottomRight, Position, Radius)) // Right Edge
+        {
+            Position.X = position.X + size.X + 32.0f;
+            Velocity.X *= -0.5f;
+        }
+    }
+}
+
+void CBall::collectableCollision()
+{
+    for (CCollectable* collectable : State->getCollectables())
+    {
+        if (IsCircleOverlappingCircle(Position, 32.0f, collectable->getPosition(), collectable->getRadius()))
+        {
+            Game->AddCollectedCount();
+            collectable->isCollected();
+            collectable->respawn();
+        }
+    }
 }
 
 void CBall::onKey(int keyCode, KeyState keyState)

@@ -23,7 +23,7 @@ void CAnimatedObject::update(float deltaTime)
     Sprite.setTexture((*CurrentFrame)[frame]);
 }
 
-void CAnimatedObject::draw()
+void CAnimatedObject::draw(vec2 offset)
 {
-    Sprite.draw(Position, Angle, Scale, FlipHorizontal);
+    Sprite.draw(Position + offset, Angle, Scale, FlipHorizontal);
 }
