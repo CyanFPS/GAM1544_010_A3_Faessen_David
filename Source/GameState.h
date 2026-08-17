@@ -1,6 +1,7 @@
 #pragma once
 #include "Helpers/InputTypes.h"
 #include "Helpers/Vector.h"
+#include "Helpers/Easing.h"
 
 class CPlatformerGame;
 
@@ -26,6 +27,10 @@ protected:
 	CPlatformerGame* Game;
 
 	vec2 m_Offset;
-	float m_SlideSpeed;
 	bool m_isSliding;
+
+	// Easing Variables
+	float m_SlideTimer;
+	float m_SlideDuration;
+	float m_StartOffsetX;
 };

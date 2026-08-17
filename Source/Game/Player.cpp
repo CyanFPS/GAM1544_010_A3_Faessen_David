@@ -3,6 +3,7 @@
 #include "PlatformerGame.h"
 #include "Ball.h"
 #include "Helpers/Sprite2D.h"
+#include "Collectable.h"
 
 
 CPlayer::CPlayer(CPlatformerGame* game) : CAnimatedObject(game) 
@@ -28,6 +29,9 @@ CPlayer::CPlayer(CPlatformerGame* game) : CAnimatedObject(game)
     WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk6.png"));
     WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk7.png"));
     WalkFrames.push_back(LoadTexture("Data/Textures/SonicWalk8.png"));
+
+    // Jump Frame
+    JumpFrame.push_back(LoadTexture("Data/Textures/SonicJump.png"));
 
     CurrentFrame = &IdleFrames;
 }
@@ -55,6 +59,11 @@ void CPlayer::update(float deltaTime)
     else
     {
         CurrentFrame = &WalkFrames;
+    }
+
+    if (!OnGround)
+    {
+        CurrentFrame = &JumpFrame;
     }
 
      // Flipping Sprites if in the respective axis
@@ -111,7 +120,6 @@ void CPlayer::setPosition(vec2 pos)
 
 void CPlayer::onKey(int keyCode, KeyState keyState)
 {
-    
     if (keyState == KeyState::Pressed)
     {
         if (keyCode == KEY_LEFT || keyCode == 'A')
@@ -127,10 +135,18 @@ void CPlayer::onKey(int keyCode, KeyState keyState)
         if (keyCode == KEY_RIGHT || keyCode == 'D')
             Controls.X -= 1;
     }
+
+    if (keyCode == KEY_SPACE && keyState == KeyState::Pressed && OnGround)
+    {
+        Velocity.Y = Jump;
+        OnGround = false;
+    }
 }
 
 void CPlayer::blockCollision(std::vector<CBlock*>& blocks)
 {
+    OnGround = false;
+   
     // Loop over blocks, check for overlaps
     for (CBlock* block : blocks)
     {
@@ -138,6 +154,8 @@ void CPlayer::blockCollision(std::vector<CBlock*>& blocks)
         {
             Position.Y = block->getPosition().Y - 50;
             Velocity.Y = 0;
+
+            OnGround = true;
         }
         if (block->getAABB().isPointInside(Position + ColliderLeftOffset)) // Left Side Collision
         {
@@ -185,6 +203,43 @@ void CPlayer::ballCollision(std::vector<CBall*>& balls)
             ball->setVelocity(velocity);
         }
         BallTouching = touching;
+    }
+}
+
+void CPlayer::collectableCollision(std::vector<CCollectable*>& collectables)
+{
+    for (CCollectable* collectable : collectables)
+    {
+        if (collectable->isCollected())
+        {
+            continue;
+        }
+        
+        bool touching = false;
+
+        if (IsCircleOverlappingCircle(Position + ColliderFootOffset, 10.0f, collectable->getPosition(), collectable->getRadius())) // Foot Collision
+        {
+            touching = true;
+        }
+        
+        if (IsCircleOverlappingCircle(Position + ColliderLeftOffset, 10.0f, collectable->getPosition(), collectable->getRadius())) // Left Arm Collision
+        {
+            touching = true;
+        }
+        if (IsCircleOverlappingCircle(Position + ColliderRightOffset, 10.0f, collectable->getPosition(), collectable->getRadius())) // Right Arm Collision
+        {
+            touching = true;
+        }
+        if (IsCircleOverlappingCircle(Position + ColliderHeadOffset, 10.0f, collectable->getPosition(), collectable ->getRadius())) // Head Collision
+        {
+            touching = true;
+        }
+
+        if (touching)
+        {
+            collectable->setCollected(true);
+            Game->AddCollectedCount();
+        }
     }
 }
 

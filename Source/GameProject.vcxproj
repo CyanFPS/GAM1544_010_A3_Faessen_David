@@ -196,9 +196,11 @@
   <ItemGroup>
     <ClCompile Include="GameoverState.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Helpers\Easing.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClInclude Include="GameoverState.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Helpers\Easing.h" />
     <ClInclude Include="MenuState.h" />
     <None Include="..\.gitignore">
     </None>

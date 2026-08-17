@@ -21,6 +21,7 @@ CPlatformerGame::CPlatformerGame()
     std::random_device rd;
     srand( rd() );
 
+    Textures["Background"] = LoadTexture("Data/Textures/GreenHillBackground.png");
     Textures["SoccerBall"] = LoadTexture( "Data/Textures/SoccerBall.png" );
     Textures["Collectable"] = LoadTexture("Data/Textures/CollectableSprite.png");
 

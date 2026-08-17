@@ -48,11 +48,6 @@ void CGameplayState::update(float deltaTime)
 {
     CGameState::update(deltaTime);
     
-    if (m_isSliding)
-    {
-        return;
-    }
-    
     // Player Updates
     if (Player != nullptr)
     {
@@ -60,6 +55,13 @@ void CGameplayState::update(float deltaTime)
 
         Player->blockCollision(m_Blocks);
         Player->ballCollision(m_Balls);
+        Player->collectableCollision(m_Collectables);
+    }
+
+    // Collectable Easing Animations
+    for (CCollectable* collectable : m_Collectables)
+    {
+        collectable->update(deltaTime);
     }
 
     m_GameplayTimer -= deltaTime;
@@ -104,8 +106,8 @@ void CGameplayState::update(float deltaTime)
 void CGameplayState::draw()
 {
     ClearBackground(WHITE);
+    DrawTexture(Game->getTexture("Background"), 0, 0, WHITE);
     DrawText(TextFormat("Collected: %i", Game->CountCollectables()), 900, 600, 50, DARKBLUE);
-    //DrawText(TextFormat("Time Left: %i", m_GameplayTimer), 900, 500, 50, DARKBLUE);
 
     if (Player != nullptr)
     {
@@ -186,6 +188,7 @@ void CGameplayState::onDeactive()
 
 void CGameplayState::createLevel()
 {
+    
     // Floor
     m_Blocks.push_back(new CBlock(vec2(0, 700), vec2(200, 50), DARKBLUE));
     m_Blocks.push_back(new CBlock(vec2(100, 700), vec2(200, 50), DARKBLUE));
@@ -198,9 +201,9 @@ void CGameplayState::createLevel()
 
     // Extra Platforms
     m_Blocks.push_back(new CBlock(vec2(250, 400), vec2(150, 25), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(750, 500), vec2(150, 25), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(750, 200), vec2(150, 25), DARKBLUE));
-    m_Blocks.push_back(new CBlock(vec2(250, 100), vec2(150, 25), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(650, 550), vec2(150, 25), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(750, 350), vec2(150, 25), DARKBLUE));
+    m_Blocks.push_back(new CBlock(vec2(500, 200), vec2(150, 25), DARKBLUE));
 
     m_CollectableSpawnPoints.push_back(vec2(875.0f, 650.0f));
     m_CollectableSpawnPoints.push_back(vec2(300.0f, 375.0f));
@@ -210,6 +213,8 @@ void CGameplayState::createLevel()
 
 void CGameplayState::createLevel2()
 {
+    m_GameplayTimer = 15.0f;
+    
     // Floor
     m_Blocks.push_back(new CBlock(vec2(0, 700), vec2(200, 50), DARKBLUE));
     m_Blocks.push_back(new CBlock(vec2(100, 700), vec2(200, 50), DARKBLUE));
@@ -221,13 +226,20 @@ void CGameplayState::createLevel2()
     m_Blocks.push_back(new CBlock(vec2(1200, 700), vec2(200, 50), DARKBLUE));
 
     // Extra Platforms
+    m_Blocks.push_back(new CBlock(vec2(250, 400), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(650, 550), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(750, 350), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(500, 200), vec2(150, 25), RED));
     m_Blocks.push_back(new CBlock(vec2(250, 300), vec2(150, 25), RED));
-    m_Blocks.push_back(new CBlock(vec2(750, 200), vec2(150, 25), RED));
-    m_Blocks.push_back(new CBlock(vec2(750, 500), vec2(150, 25), RED));
-    m_Blocks.push_back(new CBlock(vec2(550, 300), vec2(150, 25), RED));
-    m_Blocks.push_back(new CBlock(vec2(850, 300), vec2(150, 25), RED));
-    m_Blocks.push_back(new CBlock(vec2(950, 300), vec2(150, 25), RED));
-    m_Blocks.push_back(new CBlock(vec2(150, 300), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(650, 750), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(750, 950), vec2(150, 25), RED));
+    m_Blocks.push_back(new CBlock(vec2(500, 500), vec2(150, 25), RED));
+
+
+    m_CollectableSpawnPoints.push_back(vec2(875.0f, 650.0f));
+    m_CollectableSpawnPoints.push_back(vec2(300.0f, 375.0f));
+    m_CollectableSpawnPoints.push_back(vec2(550.0f, 220.0f));
+    m_CollectableSpawnPoints.push_back(vec2(550.0f, 100.0f));
 }
 
 std::vector<CBlock*>& CGameplayState::getBlocks()

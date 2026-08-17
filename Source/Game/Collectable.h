@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Helpers/Vector.h"
 #include "Helpers/Sprite2D.h"
+#include "Helpers/Easing.h"
 #include "Game/PlatformerGame.h"
 
 class CPlatformerGame;
@@ -15,6 +16,7 @@ public:
     ~CCollectable();
 
     void draw(vec2 offset);
+    void update(float deltaTime);
 
     // Getters
     vec2 getPosition();
@@ -33,4 +35,9 @@ private:
     bool m_Collected;
 
     Sprite2D* Sprite;
+
+    // Easing Variables
+    float m_AnimationTimer;
+    float m_AnimationDuration;
+    vec2 m_OriginalPosition;
 };

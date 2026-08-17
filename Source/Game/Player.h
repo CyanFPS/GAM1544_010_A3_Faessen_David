@@ -5,6 +5,7 @@
 #include "Helpers/MathFuncs.h"
 #include "Game/AnimatedObject.h"
 #include "Block.h"
+#include "Collectable.h"
 
 class CPlatformerGame;
 class CBall;
@@ -31,6 +32,7 @@ public:
     // Collision Code
     void blockCollision(std::vector<CBlock*>& blocks);
     void ballCollision(std::vector<CBall*>& balls);
+    void collectableCollision(std::vector<CCollectable*>& collectables);
 
 private:
     
@@ -46,11 +48,15 @@ private:
     // Variables for Player movement
     float Speed = 200;
     float MovementDir = 0;
+    float Jump = -300.0f;
     vec2 Controls;
 
 
-    // Variable for Ball collision
+    // Variables for collisions
     bool BallTouching = false;
 
     bool DebugVisualsEnabled = false;
+
+    // Bool to determine when player is on ground or not for smoother jumping
+    bool OnGround = false;
 };

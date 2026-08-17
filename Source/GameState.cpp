@@ -11,8 +11,11 @@ CGameState::CGameState(CPlatformerGame* game) : Game(game)
     m_Offset.X = -1280;
     m_Offset.Y = 0;
 
-    m_SlideSpeed = 2000.0f;
     m_isSliding = true;
+
+    m_SlideTimer = 0.0f;
+    m_SlideDuration = 0.5f;
+    m_StartOffsetX = -1280.0f;
 }
 
 CGameState::~CGameState()
@@ -23,13 +26,19 @@ void CGameState::update(float deltaTime)
 {
     if (m_isSliding)
     {
-        m_Offset.X += m_SlideSpeed * deltaTime;
-        
-        if (m_Offset.X >= 0)
+        m_SlideTimer += deltaTime;
+
+        float t = m_SlideTimer / m_SlideDuration;
+
+        if (t >= 1.0f)
         {
-            m_Offset.X = 0;
+            t = 1.0f;
             m_isSliding = false;
         }
+
+        float eased = Quadratic::InOut(t);
+
+        m_Offset.X = m_StartOffsetX * (1.0f - eased);
     }
 }
 
@@ -39,6 +48,9 @@ void CGameState::draw()
 
 void CGameState::onActivate()
 {
+    m_isSliding = true;
+    m_SlideTimer = 0.0f;
+    m_Offset.X = m_StartOffsetX;
 }
 
 void CGameState::onDeactive()

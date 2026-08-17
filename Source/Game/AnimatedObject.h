@@ -18,6 +18,7 @@ protected:
 
     std::vector<Texture2D> WalkFrames;
     std::vector<Texture2D> IdleFrames;
+    std::vector<Texture2D> JumpFrame;
 
     std::vector<Texture2D>* CurrentFrame;
 
