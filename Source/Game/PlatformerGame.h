@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <vector>
 #include "raylib.h"
-#include "Helpers/InputTypes.h"
-#include "Helpers/Vector.h"
+#include "..//Helpers/InputTypes.h"
+#include "..//Helpers/Vector.h"
 
 
 class CGameState;

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Helpers/Vector.h"
-#include "Helpers/InputTypes.h"
-#include "Helpers/MathFuncs.h"
-#include "Game/AnimatedObject.h"
-#include "Block.h"
-#include "Collectable.h"
+#include "..//Helpers/Vector.h"
+#include "..//Helpers/InputTypes.h"
+#include "..//Helpers/MathFuncs.h"
+#include "..//Game/AnimatedObject.h"
+#include "..//Block.h"
+#include "..//Game/Collectable.h"
 
 class CPlatformerGame;
 class CBall;

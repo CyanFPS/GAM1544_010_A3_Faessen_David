@@ -1,8 +1,8 @@
 #include "Player.h"
-#include "Block.h"
+#include "..//Block.h"
 #include "PlatformerGame.h"
 #include "Ball.h"
-#include "Helpers/Sprite2D.h"
+#include "..//Helpers/Sprite2D.h"
 #include "Collectable.h"
 
 

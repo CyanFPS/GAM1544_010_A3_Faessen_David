@@ -3,7 +3,7 @@
 #include <float.h>
 
 #include "MenuState.h"
-#include "PlatformerGame.h"
+#include "Game/PlatformerGame.h"
 
 CMenuState::CMenuState(CPlatformerGame* game) : CGameState(game)
 {

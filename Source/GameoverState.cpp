@@ -3,7 +3,7 @@
 #include <float.h>
 
 #include "GameoverState.h"
-#include "PlatformerGame.h"
+#include "Game/PlatformerGame.h"
 
 CGameoverState::CGameoverState(CPlatformerGame* game) : CGameState(game)
 {

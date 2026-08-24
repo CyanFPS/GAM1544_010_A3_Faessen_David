@@ -1,8 +1,8 @@
 #pragma once
-#include "Game/PlatformerGame.h"
+#include "../Game/PlatformerGame.h"
 #include "raylib.h"
-#include "Helpers/Vector.h"
-#include "Helpers/InputTypes.h"
+#include "..//Helpers/Vector.h"
+#include "..//Helpers/InputTypes.h"
 
 class CPlatformerGame;
 

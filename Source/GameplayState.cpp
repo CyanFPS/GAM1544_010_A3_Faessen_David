@@ -3,11 +3,11 @@
 #include <random>
 #include <float.h>
 
-#include "PlatformerGame.h"
-#include "Player.h"
+#include "Game/PlatformerGame.h"
+#include "Game/Player.h"
 #include "Block.h"
-#include "Ball.h"
-#include "Collectable.h"
+#include "Game/Ball.h"
+#include "Game/Collectable.h"
 #include "Helpers/MathFuncs.h"
 #include "Helpers/Sprite2D.h"
 

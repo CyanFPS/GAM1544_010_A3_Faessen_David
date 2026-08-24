@@ -3,12 +3,12 @@
 #include <float.h>
 
 #include "PlatformerGame.h"
-#include "GameState.h"
-#include "MenuState.h"
-#include "GameplayState.h"
-#include "GameoverState.h"
-#include "Helpers/MathFuncs.h"
-#include "Helpers/Sprite2D.h"
+#include "..//GameState.h"
+#include "..//MenuState.h"
+#include "..//GameplayState.h"
+#include "..//GameoverState.h"
+#include "..//Helpers/MathFuncs.h"
+#include "..//Helpers/Sprite2D.h"
 
 
 CPlatformerGame::CPlatformerGame()

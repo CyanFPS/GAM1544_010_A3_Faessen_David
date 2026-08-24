@@ -1,10 +1,10 @@
 #pragma once
 #include "raylib.h"
 
-#include "Helpers/InputTypes.h"
-#include "Helpers/Vector.h"
+#include "../Helpers/InputTypes.h"
+#include "../Helpers/Vector.h"
 #include <vector>
-#include "Block.h"
+#include "..//Block.h"
 
 class CPlatformerGame;
 class Sprite2D;

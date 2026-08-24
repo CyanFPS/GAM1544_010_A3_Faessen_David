@@ -1,9 +1,9 @@
 #pragma once
+#include "GameObject.h"
+#include "PlatformerGame.h"
+#include "../Helpers/Sprite2D.h"
+#include "../Helpers/Vector.h"
 #include <vector>
-#include "Game/PlatformerGame.h"
-#include "Game/GameObject.h"
-#include "Helpers/Sprite2D.h"
-#include "Helpers/Vector.h"
 
 class CAnimatedObject : public CGameObject
 {

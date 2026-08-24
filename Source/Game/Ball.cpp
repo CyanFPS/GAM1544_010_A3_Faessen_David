@@ -1,9 +1,9 @@
 #include "Ball.h"
 #include "PlatformerGame.h"
 #include "Collectable.h"
-#include "GameplayState.h"
-#include "Helpers/MathFuncs.h"
-#include "Helpers/Sprite2D.h"
+#include "..//GameplayState.h"
+#include "../Helpers/MathFuncs.h"
+#include "../Helpers/Sprite2D.h"
 
 
 CBall::CBall(CPlatformerGame* game,CGameplayState* state)

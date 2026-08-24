@@ -1,9 +1,9 @@
 #pragma once
 #include "raylib.h"
-#include "Helpers/Vector.h"
-#include "Helpers/Sprite2D.h"
-#include "Helpers/Easing.h"
-#include "Game/PlatformerGame.h"
+#include "..//Helpers/Vector.h"
+#include "..//Helpers/Sprite2D.h"
+#include "..//Helpers/Easing.h"
+#include "..//Game/PlatformerGame.h"
 
 class CPlatformerGame;
 class Sprite2D;
